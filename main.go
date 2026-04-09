@@ -15,8 +15,16 @@ func main() {
 
 	info, err := os.Stat(filepath)
 	if err != nil {
+		if os.IsNotExist(err) {
+			fmt.Println("Error: file not found")
+		} else {
+			fmt.Println("Error", err)
+		}
 
-		fmt.Println("Error", err)
+		return
+	}
+	if info.IsDir() {
+		fmt.Println("Error: that's a directory not a file")
 		return
 	}
 
