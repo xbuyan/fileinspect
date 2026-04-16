@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -19,12 +20,19 @@ type FileRecord struct {
 }
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: fileinspect <filepath>")
+	verify := flag.Bool("verify", false, "verify file against saved record")
+
+	flag.Parse()
+
+	if flag.NArg() < 1 {
+
+		fmt.Println("Usage: file inspect[--verify] <filepath")
 		return
 	}
 
-	filepath := os.Args[1]
+	filepath := flag.Arg(0)
+
+	// filepath := os.Args[1]
 
 	info, err := os.Stat(filepath)
 	if err != nil {
@@ -38,6 +46,14 @@ func main() {
 	}
 	if info.IsDir() {
 		fmt.Println("Error: that's a directory not a file")
+		return
+	}
+	if *verify {
+
+		err := verifyFile(filepath)
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
 		return
 	}
 
@@ -68,6 +84,39 @@ func main() {
 	fmt.Println("Record saved to record.json")
 }
 
+func verifyFile(filepath string) error {
+	// read the saved file
+
+	data, err := os.ReadFile("record.json")
+	if err != nil {
+		return fmt.Errorf("cannot read record.json: %v", err)
+	}
+	// convert json back to struct
+
+	var record FileRecord
+
+	err = json.Unmarshal(data, &record)
+	if err != nil {
+		return fmt.Errorf("cannot parse record.json: %v", err)
+	}
+	// get current file's hash
+
+	currentHash, err := hashFile(filepath)
+	if err != nil {
+		return fmt.Errorf("cannot hash file: %v", err)
+	}
+	if currentHash == record.SHA256 {
+		fmt.Println("Recorded hash:", record.SHA256)
+		fmt.Println("Current hash: ", currentHash)
+		fmt.Println("VERIFIED: File has not been tampered with.")
+	} else {
+		fmt.Println("Recorded hash:", record.SHA256)
+		fmt.Println("Current hash: ", currentHash)
+		fmt.Println("ALERT: File has been modified since recording.")
+	}
+	return nil
+}
+
 func hashFile(filepath string) (string, error) {
 	content, err := os.Open(filepath)
 	if err != nil {
@@ -83,21 +132,15 @@ func hashFile(filepath string) (string, error) {
 }
 
 func saveRecord(record FileRecord) error {
-
 	// 1. Convert the struct to JSON with json.MarshalIndent
 
 	bytes, err := json.MarshalIndent(record, "", "\t")
-
 	if err != nil {
-
 		return err
 	}
-	err = os.WriteFile("record.json", bytes, 0644)
-
+	err = os.WriteFile("record.json", bytes, 0o644)
 	if err != nil {
-
 		return err
 	}
 	return nil
-
 }
