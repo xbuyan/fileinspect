@@ -21,14 +21,25 @@ type FileRecord struct {
 }
 
 func main() {
+<<<<<<< HEAD
+	batch := flag.Bool("batch", false, "hash all files in a directory")
+=======
 
 	batch := flag.Bool("batch", false, "hash all files in a directory")
 
+>>>>>>> 6662348 (feat: add --batch flag for directory hashing)
 	verify := flag.Bool("verify", false, "verify file against saved record")
 
 	flag.Parse()
 
 	if flag.NArg() < 1 {
+<<<<<<< HEAD
+		fmt.Println("Usage: fileinspect [--batch] [--verify] <path>")
+		return
+	}
+
+	filepathArg := flag.Arg(0)
+=======
 
 		fmt.Println("Usage: file inspect[--verify] <filepath")
 		return
@@ -55,32 +66,52 @@ func main() {
 		}
 		return
 	}
+>>>>>>> 6662348 (feat: add --batch flag for directory hashing)
 
-	info, err := os.Stat(filepath)
+	// Handle --verify flag first
+	if *verify {
+		err := verifyFile(filepathArg)
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
+		return
+	}
+
+	// Handle --batch flag second
+	if *batch {
+		err := batchHash(filepathArg)
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
+		return
+	}
+
+	// If no flags, treat as single file mode
+	info, err := os.Stat(filepathArg)
 	if err != nil {
 		if os.IsNotExist(err) {
 			fmt.Println("Error: file not found")
 		} else {
 			fmt.Println("Error", err)
 		}
-
 		return
 	}
+
 	if info.IsDir() {
-		fmt.Println("Error: that's a directory not a file")
+		fmt.Println("Error: that's a directory not a file. Use --batch to process directories.")
 		return
 	}
 
-	fmt.Println("Name", info.Name())
-	fmt.Println("Size", info.Size())
+	fmt.Println("Name:", info.Name())
+	fmt.Println("Size:", info.Size())
 	fmt.Println("Modified:", info.ModTime().Format("2006-01-02 15:04:05"))
 
-	hash, err := hashFile(filepath)
+	hash, err := hashFile(filepathArg)
 	if err != nil {
 		fmt.Println("Error hashing file:", err)
 		return
 	}
-	fmt.Println("SHA-256: ", hash)
+	fmt.Println("SHA-256:", hash)
 
 	record := FileRecord{
 		Filename:   info.Name(),
@@ -99,6 +130,32 @@ func main() {
 }
 func verifyFile(filepath string) error {
 
+<<<<<<< HEAD
+func verifyFile(filepath string) error {
+	data, err := os.ReadFile("record.json")
+	if err != nil {
+		return fmt.Errorf("cannot read record.json: %v", err)
+	}
+
+	var record FileRecord
+	err = json.Unmarshal(data, &record)
+	if err != nil {
+		return fmt.Errorf("cannot parse record.json: %v", err)
+	}
+
+	currentHash, err := hashFile(filepath)
+	if err != nil {
+		return fmt.Errorf("cannot hash file: %v", err)
+	}
+
+	if currentHash == record.SHA256 {
+		fmt.Println("Recorded hash:", record.SHA256)
+		fmt.Println("Current hash:", currentHash)
+		fmt.Println("VERIFIED: File has not been tampered with.")
+	} else {
+		fmt.Println("Recorded hash:", record.SHA256)
+		fmt.Println("Current hash:", currentHash)
+=======
 	//read the saved file
 
 	data, err := os.ReadFile("record.json")
@@ -131,18 +188,23 @@ func verifyFile(filepath string) error {
 	} else {
 		fmt.Println("Recorded hash:", record.SHA256)
 		fmt.Println("Current hash: ", currentHash)
+>>>>>>> 6662348 (feat: add --batch flag for directory hashing)
 		fmt.Println("ALERT: File has been modified since recording.")
 	}
 	return nil
 }
+<<<<<<< HEAD
+
+=======
+>>>>>>> 6662348 (feat: add --batch flag for directory hashing)
 func hashFile(filepath string) (string, error) {
 	content, err := os.Open(filepath)
 	if err != nil {
 		return "", err
 	}
 	defer content.Close()
-	hasher := sha256.New()
 
+	hasher := sha256.New()
 	io.Copy(hasher, content)
 	bytes := hasher.Sum(nil)
 
@@ -150,23 +212,57 @@ func hashFile(filepath string) (string, error) {
 }
 
 func saveRecord(record FileRecord) error {
-
-	// 1. Convert the struct to JSON with json.MarshalIndent
-
 	bytes, err := json.MarshalIndent(record, "", "\t")
-
 	if err != nil {
-
 		return err
 	}
-	err = os.WriteFile("record.json", bytes, 0644)
-
+	err = os.WriteFile("record.json", bytes, 0o644)
 	if err != nil {
-
 		return err
 	}
 	return nil
+}
 
+func batchHash(dirPath string) error {
+	var records []FileRecord
+
+	err := filepath.Walk(dirPath, func(path string, info os.FileInfo, walkErr error) error {
+		if walkErr != nil {
+			return walkErr
+		}
+		if info.IsDir() {
+			return nil
+		}
+		hash, err := hashFile(path)
+		if err != nil {
+			return err
+		}
+		record := FileRecord{
+			Filename:   info.Name(),
+			Size:       info.Size(),
+			Modified:   info.ModTime().Format("2006-01-02 15:04:05"),
+			SHA256:     hash,
+			RecordedAt: time.Now().Format("2006-01-02 15:04:05"),
+		}
+		records = append(records, record)
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+
+	jsonBytes, err := json.MarshalIndent(records, "", "\t")
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile("batch_record.json", jsonBytes, 0o644)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Processed %d files. Record saved to batch_record.json\n", len(records))
+	return nil
 }
 func batchHash(dirPath string) error {
 

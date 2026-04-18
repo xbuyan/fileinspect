@@ -1,7 +1,14 @@
 {
 	"filename": "main.go",
+<<<<<<< HEAD
+	"size": 2989,
+	"modified": "2026-04-16 10:49:56",
+	"sha256": "621d990682c50894a39cad1a4f0272b05b365b64e80893e29c16c9e3eb25a0c9",
+	"recorded_at": "2026-04-16 10:50:27"
+=======
 	"size": 2999,
 	"modified": "2026-04-16 05:25:52",
 	"sha256": "069a957aafaa96daa263c2888056edc8a93223e687ffdcdb9cc1221396603f00",
 	"recorded_at": "2026-04-16 05:25:55"
+>>>>>>> 6662348 (feat: add --batch flag for directory hashing)
 }
