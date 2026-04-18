@@ -1,45 +1,44 @@
 [
 	{
-<<<<<<< HEAD
-		"filename": "file1.txt",
-		"size": 6,
-		"modified": "2026-04-16 13:07:18",
-		"sha256": "5891b5b522d5df086d0ff0b110fbd9d21bb4fc7163af34d08286a2e846f6be03",
-		"recorded_at": "2026-04-16 13:07:29"
-	},
-	{
-		"filename": "file2.txt",
-		"size": 6,
-		"modified": "2026-04-16 13:07:18",
-		"sha256": "e258d248fda94c63753607f7c4494ee0fcbe92f1a76bfdac795c9d84101eb317",
-		"recorded_at": "2026-04-16 13:07:29"
-	},
-	{
-		"filename": "file3.txt",
-		"size": 7,
-		"modified": "2026-04-16 13:07:18",
-		"sha256": "7b2441693c861bf6969869d8b6f45f098bc8ef07b78ca043a1cb663159aabb10",
-		"recorded_at": "2026-04-16 13:07:29"
-=======
-		"filename": "file1.go",
+		"filename": "testevidence/file1.go",
 		"size": 4610,
-		"modified": "2026-04-18 03:08:23",
+		"modified": "2026-04-18 03:12:49",
 		"sha256": "cf59c85ecc862cf9907582ed50ca260e50922ef8813d1f349a517c454ef353c8",
-		"recorded_at": "2026-04-18 03:08:51"
+		"recorded_at": "2026-04-18 05:00:44"
 	},
 	{
-		"filename": "file2.json",
+		"filename": "testevidence/file1.txt",
+		"size": 6,
+		"modified": "2026-04-18 03:16:30",
+		"sha256": "5891b5b522d5df086d0ff0b110fbd9d21bb4fc7163af34d08286a2e846f6be03",
+		"recorded_at": "2026-04-18 05:00:44"
+	},
+	{
+		"filename": "testevidence/file2.json",
 		"size": 195,
-		"modified": "2026-04-18 03:08:23",
+		"modified": "2026-04-18 03:12:49",
 		"sha256": "ac86c444d7bf4154558504d0a93a55d02de49e8102f2cf5ac7dba2345ce9d983",
-		"recorded_at": "2026-04-18 03:08:51"
+		"recorded_at": "2026-04-18 05:00:44"
 	},
 	{
-		"filename": "file3.txt",
+		"filename": "testevidence/file2.txt",
+		"size": 6,
+		"modified": "2026-04-18 03:16:30",
+		"sha256": "e258d248fda94c63753607f7c4494ee0fcbe92f1a76bfdac795c9d84101eb317",
+		"recorded_at": "2026-04-18 05:00:44"
+	},
+	{
+		"filename": "testevidence/file3.txt",
 		"size": 13,
-		"modified": "2026-04-18 03:08:23",
+		"modified": "2026-04-18 03:12:49",
 		"sha256": "a1fff0ffefb9eace7230c24e50731f0a91c62f9cefdfe77121c2f607125dffae",
-		"recorded_at": "2026-04-18 03:08:51"
->>>>>>> 6662348 (feat: add --batch flag for directory hashing)
+		"recorded_at": "2026-04-18 05:00:44"
+	},
+	{
+		"filename": "testevidence/subfolder/file3.txt",
+		"size": 7,
+		"modified": "2026-04-18 03:16:30",
+		"sha256": "7b2441693c861bf6969869d8b6f45f098bc8ef07b78ca043a1cb663159aabb10",
+		"recorded_at": "2026-04-18 05:00:44"
 	}
 ]
