@@ -1,0 +1,23 @@
+[
+	{
+		"filename": "file1.go",
+		"size": 4610,
+		"modified": "2026-04-18 03:08:23",
+		"sha256": "cf59c85ecc862cf9907582ed50ca260e50922ef8813d1f349a517c454ef353c8",
+		"recorded_at": "2026-04-18 03:08:51"
+	},
+	{
+		"filename": "file2.json",
+		"size": 195,
+		"modified": "2026-04-18 03:08:23",
+		"sha256": "ac86c444d7bf4154558504d0a93a55d02de49e8102f2cf5ac7dba2345ce9d983",
+		"recorded_at": "2026-04-18 03:08:51"
+	},
+	{
+		"filename": "file3.txt",
+		"size": 13,
+		"modified": "2026-04-18 03:08:23",
+		"sha256": "a1fff0ffefb9eace7230c24e50731f0a91c62f9cefdfe77121c2f607125dffae",
+		"recorded_at": "2026-04-18 03:08:51"
+	}
+]
