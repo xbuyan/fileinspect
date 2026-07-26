@@ -1,0 +1,20 @@
+# Compiled binaries
+/fileinspect
+fileinspect.exe
+*.exe
+*.test
+*.out
+
+# Runtime output (generated when the CLI runs)
+record.json
+batch_record.json
+
+# Go build/test artifacts
+*.prof
+coverage.txt
+coverage.html
+
+# Editor/OS cruft
+.DS_Store
+.vscode/
+.idea/

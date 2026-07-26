@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 )
 
 func main() {
@@ -20,25 +21,25 @@ func main() {
 
 	// Handle --verify flag first
 	if *verify {
-		err := verifyFile(filepathArg)
-		if err != nil {
+		if err := verifyFile(filepathArg); err != nil {
 			fmt.Println("Error:", err)
+			os.Exit(1)
 		}
 		return
 	}
 
 	// Handle --batch flag second
 	if *batch {
-		err := batchHash(filepathArg)
-		if err != nil {
+		if err := batchHash(filepathArg); err != nil {
 			fmt.Println("Error:", err)
+			os.Exit(1)
 		}
 		return
 	}
 
 	// If no flags, treat as single file mode
-	err := processSingleFile(filepathArg)
-	if err != nil {
+	if err := processSingleFile(filepathArg); err != nil {
 		fmt.Println("Error:", err)
+		os.Exit(1)
 	}
 }

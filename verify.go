@@ -23,14 +23,14 @@ func verifyFile(filepath string) error {
 		return fmt.Errorf("cannot hash file: %v", err)
 	}
 
+	fmt.Println("Recorded hash:", record.SHA256)
+	fmt.Println("Current hash:", currentHash)
+
 	if currentHash == record.SHA256 {
-		fmt.Println("Recorded hash:", record.SHA256)
-		fmt.Println("Current hash:", currentHash)
 		fmt.Println("VERIFIED: File has not been tampered with.")
-	} else {
-		fmt.Println("Recorded hash:", record.SHA256)
-		fmt.Println("Current hash:", currentHash)
-		fmt.Println("ALERT: File has been modified since recording.")
+		return nil
 	}
-	return nil
+
+	fmt.Println("ALERT: File has been modified since recording.")
+	return fmt.Errorf("hash mismatch: file has been modified since recording")
 }
